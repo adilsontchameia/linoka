@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:snake_game/screen/widgets/blank_pixel.dart';
 import 'package:snake_game/screen/widgets/food_pixel.dart';
@@ -22,6 +24,18 @@ class _HomePageState extends State<HomePage> {
   ];
   //Food Position
   int foodPosition = 55;
+  //Start Game Method
+  void startGame() {
+    Timer.periodic(const Duration(milliseconds: 200), (timer) {
+      setState(() {
+        //Add a New head
+        snakePosition.add(snakePosition.last + 1);
+        //Remove The Tail
+        snakePosition.removeAt(0);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,26 +49,52 @@ class _HomePageState extends State<HomePage> {
           //GameGrid
           Expanded(
             flex: 3,
-            child: GridView.builder(
-              itemCount: totalNumberSquares,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: rowSize,
-              ),
-              itemBuilder: (context, index) {
-                if (snakePosition.contains(index)) {
-                  return const SnakePixel();
-                } else if (foodPosition == index) {
-                  return const FoodPixel();
-                } else {
-                  return const BlankPixel();
+            child: GestureDetector(
+              onVerticalDragUpdate: (details) {
+                //If Delta Y is Positive
+                if (details.delta.dy > 0) {
+                  //Moving Down
+                } else if (details.delta.dy < 0) {
+                  //Moving Up
                 }
               },
+              onHorizontalDragUpdate: (details) {
+                //If Delta Y is Positive
+                if (details.delta.dy > 0) {
+                  //Moving Right
+                } else if (details.delta.dy < 0) {
+                  //Moving Left
+                }
+              },
+              child: GridView.builder(
+                itemCount: totalNumberSquares,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: rowSize,
+                ),
+                itemBuilder: (context, index) {
+                  if (snakePosition.contains(index)) {
+                    return const SnakePixel();
+                  } else if (foodPosition == index) {
+                    return const FoodPixel();
+                  } else {
+                    return const BlankPixel();
+                  }
+                },
+              ),
             ),
           ),
           //Play Button
           Expanded(
-            child: Container(),
+            child: SizedBox(
+              child: Center(
+                child: MaterialButton(
+                  color: Colors.pink,
+                  onPressed: startGame,
+                  child: const Text('Play'),
+                ),
+              ),
+            ),
           ),
         ],
       ),
