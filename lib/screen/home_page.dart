@@ -17,6 +17,8 @@ class HomePage extends StatefulWidget {
 enum SnakeDirection { UP, DOWN, LEFT, RIGHT }
 
 class _HomePageState extends State<HomePage> {
+  //CurrentScore
+  int currentScore = 0;
   //Grid Dimensions
   int rowSize = 10;
   int totalNumberSquares = 100;
@@ -36,8 +38,21 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         //Moving the Snake
         moveSnake();
-        //Eating the Food
-        eatingFood();
+
+        //Check If Game Over is Over
+        if (gameOver()) {
+          timer.cancel();
+          //Display a message to the user
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('GameOver'),
+                content: Text('Your Score Is: $currentScore'),
+              );
+            },
+          );
+        }
       });
     });
   }
@@ -104,10 +119,25 @@ class _HomePageState extends State<HomePage> {
 
   //Eating the food
   void eatingFood() {
+    //Increasing the Score when eating
+    currentScore++;
     //Making Sure The Food Is Not Where The Snake Is
     while (snakePosition.contains(foodPosition)) {
       foodPosition = Random().nextInt(totalNumberSquares);
     }
+  }
+
+  //GameOver
+  bool gameOver() {
+    //Game is over when the snake runs into itself
+    //This occurs when there is a duplicate position in the snakePosition list
+
+    //This list is the body of the snake (no head)
+    List<int> bodySnake = snakePosition.sublist(0, snakePosition.length - 1);
+    if (bodySnake.contains(snakePosition.last)) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -118,7 +148,16 @@ class _HomePageState extends State<HomePage> {
         children: [
           //High Scores
           Expanded(
-            child: Container(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //User Current Score
+                const Text('Current Score'),
+                Text(currentScore.toString()),
+                //High Score, Top5, Top10
+                //const Text('currentDirection.toString()'),
+              ],
+            ),
           ),
           //GameGrid
           Expanded(
@@ -131,12 +170,10 @@ class _HomePageState extends State<HomePage> {
                     currentDirection != SnakeDirection.UP) {
                   //Moving Down
                   currentDirection = SnakeDirection.DOWN;
-                  print('DOWN');
                 } else if (details.delta.dy < 0 &&
                     currentDirection != SnakeDirection.DOWN) {
                   //Moving Up
                   currentDirection = SnakeDirection.UP;
-                  print('UP');
                 }
               },
               onHorizontalDragUpdate: (details) {
@@ -145,12 +182,10 @@ class _HomePageState extends State<HomePage> {
                     currentDirection != SnakeDirection.LEFT) {
                   //Moving Right
                   currentDirection = SnakeDirection.RIGHT;
-                  print('RIGHT');
                 } else if (details.delta.dx < 0 &&
                     currentDirection != SnakeDirection.RIGHT) {
                   //Moving Left
                   currentDirection = SnakeDirection.LEFT;
-                  print('DOWN');
                 }
               },
               child: GridView.builder(
