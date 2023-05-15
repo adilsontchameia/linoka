@@ -12,6 +12,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+// ignore: constant_identifier_names
+enum SnakeDirection { UP, DOWN, LEFT, RIGHT }
+
 class _HomePageState extends State<HomePage> {
   //Grid Dimensions
   int rowSize = 10;
@@ -22,6 +25,8 @@ class _HomePageState extends State<HomePage> {
     1,
     2,
   ];
+  //SnakeDirection is Initialy To The Right
+  var currentDirection = SnakeDirection.RIGHT;
   //Food Position
   int foodPosition = 55;
   //Start Game Method
@@ -54,16 +59,20 @@ class _HomePageState extends State<HomePage> {
                 //If Delta Y is Positive
                 if (details.delta.dy > 0) {
                   //Moving Down
+                  currentDirection = SnakeDirection.DOWN;
                 } else if (details.delta.dy < 0) {
                   //Moving Up
+                  currentDirection = SnakeDirection.UP;
                 }
               },
               onHorizontalDragUpdate: (details) {
                 //If Delta Y is Positive
                 if (details.delta.dy > 0) {
                   //Moving Right
+                  currentDirection = SnakeDirection.RIGHT;
                 } else if (details.delta.dy < 0) {
                   //Moving Left
+                  currentDirection = SnakeDirection.LEFT;
                 }
               },
               child: GridView.builder(
