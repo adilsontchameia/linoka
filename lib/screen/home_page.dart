@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:snake_game/screen/widgets/blank_pixel.dart';
@@ -33,11 +34,15 @@ class _HomePageState extends State<HomePage> {
   void startGame() {
     Timer.periodic(const Duration(milliseconds: 200), (timer) {
       setState(() {
+        //Moving the Snake
         moveSnake();
+        //Eating the Food
+        eatingFood();
       });
     });
   }
 
+  //Moving the snake
   void moveSnake() {
     switch (currentDirection) {
       case SnakeDirection.RIGHT:
@@ -49,8 +54,6 @@ class _HomePageState extends State<HomePage> {
           } else {
             snakePosition.add(snakePosition.last + 1);
           }
-          //Remove The Tail
-          snakePosition.removeAt(0);
         }
         break;
       case SnakeDirection.LEFT:
@@ -62,8 +65,6 @@ class _HomePageState extends State<HomePage> {
           } else {
             snakePosition.add(snakePosition.last - 1);
           }
-          //Remove The Tail
-          snakePosition.removeAt(0);
         }
         break;
       case SnakeDirection.UP:
@@ -76,8 +77,6 @@ class _HomePageState extends State<HomePage> {
           } else {
             snakePosition.add(snakePosition.last - rowSize);
           }
-          //Remove The Tail
-          snakePosition.removeAt(0);
         }
         break;
       case SnakeDirection.DOWN:
@@ -90,11 +89,24 @@ class _HomePageState extends State<HomePage> {
           } else {
             snakePosition.add(snakePosition.last + rowSize);
           }
-          //Remove The Tail
-          snakePosition.removeAt(0);
         }
         break;
       default:
+    }
+    //Snake is eating the food
+    if (snakePosition.last == foodPosition) {
+      eatingFood();
+    } else {
+      //Remove The Tail
+      snakePosition.removeAt(0);
+    }
+  }
+
+  //Eating the food
+  void eatingFood() {
+    //Making Sure The Food Is Not Where The Snake Is
+    while (snakePosition.contains(foodPosition)) {
+      foodPosition = Random().nextInt(totalNumberSquares);
     }
   }
 
