@@ -33,12 +33,47 @@ class _HomePageState extends State<HomePage> {
   void startGame() {
     Timer.periodic(const Duration(milliseconds: 200), (timer) {
       setState(() {
-        //Add a New head
-        snakePosition.add(snakePosition.last + 1);
-        //Remove The Tail
-        snakePosition.removeAt(0);
+        moveSnake();
       });
     });
+  }
+
+  void moveSnake() {
+    switch (currentDirection) {
+      case SnakeDirection.RIGHT:
+        {
+          //Add a New head
+          snakePosition.add(snakePosition.last + 1);
+          //Remove The Tail
+          snakePosition.removeAt(0);
+        }
+        break;
+      case SnakeDirection.LEFT:
+        {
+          //Add a New head
+          snakePosition.add(snakePosition.last - 1);
+          //Remove The Tail
+          snakePosition.removeAt(0);
+        }
+        break;
+      case SnakeDirection.UP:
+        {
+          //Add a New head
+          snakePosition.add(snakePosition.last - rowSize);
+          //Remove The Tail
+          snakePosition.removeAt(0);
+        }
+        break;
+      case SnakeDirection.DOWN:
+        {
+          //Add a New head
+          snakePosition.add(snakePosition.last + rowSize);
+          //Remove The Tail
+          snakePosition.removeAt(0);
+        }
+        break;
+      default:
+    }
   }
 
   @override
@@ -57,22 +92,31 @@ class _HomePageState extends State<HomePage> {
             child: GestureDetector(
               onVerticalDragUpdate: (details) {
                 //If Delta Y is Positive
-                if (details.delta.dy > 0) {
+                //If Going Up, Can't Go Down
+                if (details.delta.dy > 0 &&
+                    currentDirection != SnakeDirection.UP) {
                   //Moving Down
                   currentDirection = SnakeDirection.DOWN;
-                } else if (details.delta.dy < 0) {
+                  print('DOWN');
+                } else if (details.delta.dy < 0 &&
+                    currentDirection != SnakeDirection.DOWN) {
                   //Moving Up
                   currentDirection = SnakeDirection.UP;
+                  print('UP');
                 }
               },
               onHorizontalDragUpdate: (details) {
                 //If Delta Y is Positive
-                if (details.delta.dy > 0) {
+                if (details.delta.dx > 0 &&
+                    currentDirection != SnakeDirection.LEFT) {
                   //Moving Right
                   currentDirection = SnakeDirection.RIGHT;
-                } else if (details.delta.dy < 0) {
+                  print('RIGHT');
+                } else if (details.delta.dx < 0 &&
+                    currentDirection != SnakeDirection.RIGHT) {
                   //Moving Left
                   currentDirection = SnakeDirection.LEFT;
+                  print('DOWN');
                 }
               },
               child: GridView.builder(
