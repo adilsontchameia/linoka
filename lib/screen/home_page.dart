@@ -42,32 +42,54 @@ class _HomePageState extends State<HomePage> {
     switch (currentDirection) {
       case SnakeDirection.RIGHT:
         {
-          //Add a New head
-          snakePosition.add(snakePosition.last + 1);
+          //If Snake is at right wall, need to re-adjust
+          //% => Module => The Remain
+          if (snakePosition.last % rowSize == 9) {
+            snakePosition.add(snakePosition.last + 1 - rowSize);
+          } else {
+            snakePosition.add(snakePosition.last + 1);
+          }
           //Remove The Tail
           snakePosition.removeAt(0);
         }
         break;
       case SnakeDirection.LEFT:
         {
-          //Add a New head
-          snakePosition.add(snakePosition.last - 1);
+          //If Snake is at right wall, need to re-adjust
+          //% => Module => The Remain
+          if (snakePosition.last % rowSize == 0) {
+            snakePosition.add(snakePosition.last - 1 + rowSize);
+          } else {
+            snakePosition.add(snakePosition.last - 1);
+          }
           //Remove The Tail
           snakePosition.removeAt(0);
         }
         break;
       case SnakeDirection.UP:
         {
-          //Add a New head
-          snakePosition.add(snakePosition.last - rowSize);
+          //If Snake is at right wall, need to re-adjust
+          //% => Module => The Remain
+          if (snakePosition.last < rowSize) {
+            snakePosition
+                .add(snakePosition.last - rowSize + totalNumberSquares);
+          } else {
+            snakePosition.add(snakePosition.last - rowSize);
+          }
           //Remove The Tail
           snakePosition.removeAt(0);
         }
         break;
       case SnakeDirection.DOWN:
         {
-          //Add a New head
-          snakePosition.add(snakePosition.last + rowSize);
+          //If Snake is at right wall, need to re-adjust
+          //% => Module => The Remain
+          if (snakePosition.last + rowSize > totalNumberSquares) {
+            snakePosition
+                .add(snakePosition.last + rowSize - totalNumberSquares);
+          } else {
+            snakePosition.add(snakePosition.last + rowSize);
+          }
           //Remove The Tail
           snakePosition.removeAt(0);
         }
@@ -88,7 +110,7 @@ class _HomePageState extends State<HomePage> {
           ),
           //GameGrid
           Expanded(
-            flex: 3,
+            flex: 4,
             child: GestureDetector(
               onVerticalDragUpdate: (details) {
                 //If Delta Y is Positive
@@ -139,6 +161,7 @@ class _HomePageState extends State<HomePage> {
           ),
           //Play Button
           Expanded(
+            flex: 1,
             child: SizedBox(
               child: Center(
                 child: MaterialButton(
