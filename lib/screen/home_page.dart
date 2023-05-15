@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snake_game/utils/blank_pixel.dart';
+import 'package:snake_game/screen/widgets/blank_pixel.dart';
+import 'package:snake_game/screen/widgets/snake_pixel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +13,12 @@ class _HomePageState extends State<HomePage> {
   //Grid Dimensions
   int rowSize = 10;
   int totalNumberSquares = 100;
+  //Snake Position
+  List<int> snakePosition = [
+    0,
+    1,
+    2,
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +39,11 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: rowSize,
               ),
               itemBuilder: (context, index) {
-                return const BlankPixel();
+                if (snakePosition.contains(index)) {
+                  return const SnakePixel();
+                } else {
+                  return const BlankPixel();
+                }
               },
             ),
           ),
