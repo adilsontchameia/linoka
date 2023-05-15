@@ -19,6 +19,8 @@ enum SnakeDirection { UP, DOWN, LEFT, RIGHT }
 class _HomePageState extends State<HomePage> {
   //CurrentScore
   int currentScore = 0;
+  //Game Started
+  bool gamehasStarted = false;
   //Grid Dimensions
   int rowSize = 10;
   int totalNumberSquares = 100;
@@ -34,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   int foodPosition = 55;
   //Start Game Method
   void startGame() {
+    gamehasStarted = true;
     Timer.periodic(const Duration(milliseconds: 200), (timer) {
       setState(() {
         //Moving the Snake
@@ -52,6 +55,7 @@ class _HomePageState extends State<HomePage> {
               );
             },
           );
+          newGame();
         }
       });
     });
@@ -140,6 +144,20 @@ class _HomePageState extends State<HomePage> {
     return false;
   }
 
+  //Start New Game
+  void newGame() {
+    setState(() {
+      snakePosition = [
+        0,
+        1,
+        2,
+      ];
+      foodPosition = 55;
+      currentDirection = SnakeDirection.RIGHT;
+      gamehasStarted = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -212,8 +230,8 @@ class _HomePageState extends State<HomePage> {
             child: SizedBox(
               child: Center(
                 child: MaterialButton(
-                  color: Colors.pink,
-                  onPressed: startGame,
+                  color: gamehasStarted ? Colors.grey : Colors.pink,
+                  onPressed: gamehasStarted ? () {} : startGame,
                   child: const Text('Play'),
                 ),
               ),
