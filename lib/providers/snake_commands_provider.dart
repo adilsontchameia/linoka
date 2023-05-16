@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import '../screen/widgets/dialog_box.dart';
+import '../widgets/dialog_box.dart';
 import '../utils/constants.dart';
 import '../utils/game_command_enums.dart';
 import '../utils/snake_food_list.dart';
