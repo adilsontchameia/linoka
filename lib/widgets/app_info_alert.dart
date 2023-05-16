@@ -2,7 +2,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/constants.dart';
+import '../utils/constants.dart';
 
 // ignore: must_be_immutable
 class AppInfoAlertDialog extends StatefulWidget {

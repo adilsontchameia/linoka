@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snake_game/utils/constants.dart';
 
-import '../../providers/snake_commands_provider.dart';
+import '../providers/snake_commands_provider.dart';
 
 class ScoreWidget extends StatelessWidget {
   const ScoreWidget({
