@@ -18,10 +18,10 @@ class ScoreWidget extends StatelessWidget {
         const Text(
           AppConstants.score,
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15.0),
+              fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18.0),
         ),
         AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 600),
           transitionBuilder: (Widget child, Animation<double> animation) {
             return ScaleTransition(scale: animation, child: child);
           },
