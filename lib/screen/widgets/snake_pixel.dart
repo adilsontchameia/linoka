@@ -10,7 +10,8 @@ class SnakePixel extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(3),
         ),
       ),
     );
