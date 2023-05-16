@@ -1,10 +1,10 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:snake_game/providers/snake_commands_provider.dart';
 import 'package:snake_game/screen/widgets/blank_pixel.dart';
-import 'package:snake_game/screen/widgets/food_pixel.dart';
 import 'package:snake_game/screen/widgets/snake_pixel.dart';
+import '../utils/constants.dart';
+import '../utils/snack_direction_logic.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,232 +13,147 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-// ignore: constant_identifier_names
-enum SnakeDirection { UP, DOWN, LEFT, RIGHT }
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  SnakeCommandsProvider snakeProvider = SnakeCommandsProvider();
 
-class _HomePageState extends State<HomePage> {
-  //CurrentScore
-  int currentScore = 0;
-  //Game Started
-  bool gamehasStarted = false;
-  //Grid Dimensions
-  int rowSize = 10;
-  int totalNumberSquares = 100;
-  //Snake Position
-  List<int> snakePosition = [
-    0,
-    1,
-    2,
-  ];
-  //SnakeDirection is Initialy To The Right
-  var currentDirection = SnakeDirection.RIGHT;
-  //Food Position
-  int foodPosition = 55;
-  //Start Game Method
-  void startGame() {
-    gamehasStarted = true;
-    Timer.periodic(const Duration(milliseconds: 200), (timer) {
-      setState(() {
-        //Moving the Snake
-        moveSnake();
-
-        //Check If Game Over is Over
-        if (gameOver()) {
-          timer.cancel();
-          //Display a message to the user
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('GameOver'),
-                content: Text('Your Score Is: $currentScore'),
-              );
-            },
-          );
-          newGame();
-        }
-      });
-    });
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    snakeProvider.stopBackgroundSound();
+    super.dispose();
   }
 
-  //Moving the snake
-  void moveSnake() {
-    switch (currentDirection) {
-      case SnakeDirection.RIGHT:
-        {
-          //If Snake is at right wall, need to re-adjust
-          //% => Module => The Remain
-          if (snakePosition.last % rowSize == 9) {
-            snakePosition.add(snakePosition.last + 1 - rowSize);
-          } else {
-            snakePosition.add(snakePosition.last + 1);
-          }
-        }
-        break;
-      case SnakeDirection.LEFT:
-        {
-          //If Snake is at right wall, need to re-adjust
-          //% => Module => The Remain
-          if (snakePosition.last % rowSize == 0) {
-            snakePosition.add(snakePosition.last - 1 + rowSize);
-          } else {
-            snakePosition.add(snakePosition.last - 1);
-          }
-        }
-        break;
-      case SnakeDirection.UP:
-        {
-          //If Snake is at right wall, need to re-adjust
-          //% => Module => The Remain
-          if (snakePosition.last < rowSize) {
-            snakePosition
-                .add(snakePosition.last - rowSize + totalNumberSquares);
-          } else {
-            snakePosition.add(snakePosition.last - rowSize);
-          }
-        }
-        break;
-      case SnakeDirection.DOWN:
-        {
-          //If Snake is at right wall, need to re-adjust
-          //% => Module => The Remain
-          if (snakePosition.last + rowSize > totalNumberSquares) {
-            snakePosition
-                .add(snakePosition.last + rowSize - totalNumberSquares);
-          } else {
-            snakePosition.add(snakePosition.last + rowSize);
-          }
-        }
-        break;
-      default:
-    }
-    //Snake is eating the food
-    if (snakePosition.last == foodPosition) {
-      eatingFood();
-    } else {
-      //Remove The Tail
-      snakePosition.removeAt(0);
-    }
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    snakeProvider.playBackgroundSound();
+    super.initState();
   }
 
-  //Eating the food
-  void eatingFood() {
-    //Increasing the Score when eating
-    currentScore++;
-    //Making Sure The Food Is Not Where The Snake Is
-    while (snakePosition.contains(foodPosition)) {
-      foodPosition = Random().nextInt(totalNumberSquares);
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    //Resuming from the settings
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      snakeProvider.pauseBackgroundSound();
     }
-  }
-
-  //GameOver
-  bool gameOver() {
-    //Game is over when the snake runs into itself
-    //This occurs when there is a duplicate position in the snakePosition list
-
-    //This list is the body of the snake (no head)
-    List<int> bodySnake = snakePosition.sublist(0, snakePosition.length - 1);
-    if (bodySnake.contains(snakePosition.last)) {
-      return true;
+    if (state == AppLifecycleState.resumed) {
+      snakeProvider.playBackgroundSound();
     }
-    return false;
-  }
-
-  //Start New Game
-  void newGame() {
-    setState(() {
-      snakePosition = [
-        0,
-        1,
-        2,
-      ];
-      foodPosition = 55;
-      currentDirection = SnakeDirection.RIGHT;
-      gamehasStarted = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final gameProvider = context.watch<SnakeCommandsProvider>();
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Column(
-        children: [
-          //High Scores
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //User Current Score
-                const Text('Current Score'),
-                Text(currentScore.toString()),
-                //High Score, Top5, Top10
-                //const Text('currentDirection.toString()'),
-              ],
-            ),
-          ),
-          //GameGrid
-          Expanded(
-            flex: 4,
-            child: GestureDetector(
-              onVerticalDragUpdate: (details) {
-                //If Delta Y is Positive
-                //If Going Up, Can't Go Down
-                if (details.delta.dy > 0 &&
-                    currentDirection != SnakeDirection.UP) {
-                  //Moving Down
-                  currentDirection = SnakeDirection.DOWN;
-                } else if (details.delta.dy < 0 &&
-                    currentDirection != SnakeDirection.DOWN) {
-                  //Moving Up
-                  currentDirection = SnakeDirection.UP;
-                }
-              },
-              onHorizontalDragUpdate: (details) {
-                //If Delta Y is Positive
-                if (details.delta.dx > 0 &&
-                    currentDirection != SnakeDirection.LEFT) {
-                  //Moving Right
-                  currentDirection = SnakeDirection.RIGHT;
-                } else if (details.delta.dx < 0 &&
-                    currentDirection != SnakeDirection.RIGHT) {
-                  //Moving Left
-                  currentDirection = SnakeDirection.LEFT;
-                }
-              },
-              child: GridView.builder(
-                itemCount: totalNumberSquares,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: rowSize,
+      backgroundColor: Colors.black12,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+/*
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              Expanded(
+                  flex: 0,
+                  child: Row(children: [
+                    ScoreWidget(gameProvider: gameProvider),
+                    AppInfoAlertDialog(
+                        backgroundSound: gameProvider.backgroundSound,
+                        backgroundVolume: gameProvider.backgroundVolume)
+                  ])),
+              Expanded(
+                flex: 0,
+                child: Container(
+                  color: AppConstants.backgroundContainerColor,
+                  child: Expanded(
+                    child: Row(
+                      children: [
+                        CustomElevatedButton(
+                            gameProvider: gameProvider,
+                            foregroundColor: Colors.white,
+                            backgroundColor1: Colors.green,
+                            buttonTitle: AppConstants.play,
+                            onPressed: () {
+                              playButtonLogic(gameProvider);
+                            }),
+                        const SizedBox(width: 5.0),
+                        AbsorbPointer(
+                          absorbing:
+                              !gameProvider.gamehasStarted ? true : false,
+                          child: CustomElevatedButton(
+                              gameProvider: gameProvider,
+                              foregroundColor: Colors.white,
+                              backgroundColor1: Colors.grey,
+                              backgroundColor2: Colors.amber,
+                              buttonTitle: AppConstants.pause,
+                              onPressed: () {
+                                gameProvider.pauseGame();
+                                gameProvider.gamehasPaused = true;
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                itemBuilder: (context, index) {
-                  if (snakePosition.contains(index)) {
-                    return const SnakePixel();
-                  } else if (foodPosition == index) {
-                    return const FoodPixel();
-                  } else {
-                    return const BlankPixel();
-                  }
+              )
+
+            ]),
+            */
+            //GameGrid
+            Expanded(
+              flex: 4,
+              child: GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  //If Delta Y is Positive
+                  swipeDownAndUp(details, gameProvider);
                 },
-              ),
-            ),
-          ),
-          //Play Button
-          Expanded(
-            flex: 1,
-            child: SizedBox(
-              child: Center(
-                child: MaterialButton(
-                  color: gamehasStarted ? Colors.grey : Colors.pink,
-                  onPressed: gamehasStarted ? () {} : startGame,
-                  child: const Text('Play'),
+                onHorizontalDragUpdate: (details) {
+                  //If Delta Y is Positive
+                  swipeLeftAndRight(details, gameProvider);
+                },
+                child: Container(
+                  color: AppConstants.backgroundContainerGridColor,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.5),
+                    child: GridView.builder(
+                      itemCount: gameProvider.totalNumberSquares,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: gameProvider.rowSize,
+                      ),
+                      itemBuilder: (context, index) {
+                        if (gameProvider.snakePosition.contains(index)) {
+                          return const SnakePixel();
+                        } else if (gameProvider.foodPosition == index) {
+                          //return const FoodPixel();
+                          return Text(
+                            gameProvider.typeFood[gameProvider.randomFood],
+                            style: const TextStyle(fontSize: 18.0),
+                          );
+                        } else {
+                          return const BlankPixel();
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            //Game Config Board
+          ],
+        ),
       ),
     );
+  }
+
+  void playButtonLogic(SnakeCommandsProvider gameProvider) {
+    if (gameProvider.gamehasStarted == false) {
+      gameProvider.startGame(context);
+    }
+    if (gameProvider.gamehasPaused == true) {
+      gameProvider.gamehasStarted = false;
+      gameProvider.startGame(context);
+    }
   }
 }
