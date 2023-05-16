@@ -7,6 +7,7 @@ import 'package:snake_game/screen/widgets/custom_elevated_button.dart';
 import 'package:snake_game/screen/widgets/score_widget.dart';
 import 'package:snake_game/screen/widgets/snake_pixel.dart';
 import '../utils/constants.dart';
+import '../utils/play_button_logic.dart';
 import '../utils/snake_direction_logic.dart';
 import '../utils/snake_food_list.dart';
 
@@ -109,7 +110,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     backgroundColor1: Colors.green,
                     buttonTitle: AppConstants.play,
                     onPressed: () {
-                      playButtonLogic(gameProvider);
+                      playButtonLogic(context, gameProvider);
                     }),
                 const SizedBox(width: 5.0),
                 AbsorbPointer(
@@ -135,15 +136,5 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ],
       ),
     );
-  }
-
-  void playButtonLogic(SnakeCommandsProvider gameProvider) {
-    if (gameProvider.gamehasStarted == false) {
-      gameProvider.startGame(context);
-    }
-    if (gameProvider.gamehasPaused == true) {
-      gameProvider.gamehasStarted = false;
-      gameProvider.startGame(context);
-    }
   }
 }
