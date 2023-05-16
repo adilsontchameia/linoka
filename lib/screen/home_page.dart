@@ -8,6 +8,7 @@ import 'package:snake_game/screen/widgets/score_widget.dart';
 import 'package:snake_game/screen/widgets/snake_pixel.dart';
 import '../utils/constants.dart';
 import '../utils/snake_direction_logic.dart';
+import '../utils/snake_food_list.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         } else if (gameProvider.foodPosition == index) {
                           //return const FoodPixel();
                           return Text(
-                            gameProvider.typeFood[gameProvider.randomFood],
+                            typeFood[gameProvider.randomFood],
                             style: const TextStyle(fontSize: 18.0),
                           );
                         } else {
