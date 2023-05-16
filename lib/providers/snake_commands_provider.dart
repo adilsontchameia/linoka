@@ -7,32 +7,12 @@ import 'package:flutter/material.dart';
 import '../screen/widgets/dialog_box.dart';
 import '../utils/constants.dart';
 import '../utils/game_command_enums.dart';
+import '../utils/snake_food_list.dart';
 
 class SnakeCommandsProvider extends ChangeNotifier {
   //RandomFood Provider
   int randomFood = 0;
-  List<String> typeFood = [
-    '🍇',
-    '🍈',
-    '🍉',
-    '🍊',
-    '🍌',
-    '🍍',
-    '🍑',
-    '🍒',
-    '🍓',
-    '🥝',
-    '🍅',
-    '🍎',
-    '🍏',
-    '🍐',
-    '🍑',
-    '🍋',
-    '🌾',
-    '🍚',
-    '🍘',
-    '🍙',
-  ];
+
   void rondomizeFood() {
     randomFood = Random().nextInt(typeFood.length);
     notifyListeners();
