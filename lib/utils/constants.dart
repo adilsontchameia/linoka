@@ -12,7 +12,8 @@ abstract class AppConstants {
   //Settings Sections Constants
   static const logImgPath = 'assets/logo.png';
   static const volumeSettings = 'Volume Settings';
-  static const appInfo = 'This App Was Developed By Adilson Tchameia.';
+  static const appInfo =
+      'Linoka is a simple snake game made by Adilson Tchameia, the name of this app is originally derived from the Nguaguela / Ganguela language, which means SNAKE.\nNguaguela / Ganguela: Ethnic group that lives in the east and southeast of the Central Plateau of Angola - Cuando Cubango.';
   static const emailInfo = 'Email: adilsontchameia@gmail.com';
   static const socialInfo = 'Linkedin/Github: Adilson Tchameia';
   static const uiInfo = 'UI: Adilson Tchameia';
