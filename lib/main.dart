@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
             create: (_) => SnakeCommandsProvider(), lazy: false),
       ],
       child: MaterialApp(
-        useInheritedMediaQuery: true,
         //locale: DevicePreview.locale(context),
         //builder: DevicePreview.appBuilder,
         debugShowCheckedModeBanner: false,
