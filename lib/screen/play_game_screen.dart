@@ -4,6 +4,7 @@ import 'package:snake_game/providers/snake_commands_provider.dart';
 import 'package:snake_game/widgets/app_info_alert.dart';
 import 'package:snake_game/widgets/blank_pixel.dart';
 import 'package:snake_game/widgets/custom_elevated_button.dart';
+import 'package:snake_game/widgets/init_alert_dialog.dart';
 import 'package:snake_game/widgets/score_widget.dart';
 import 'package:snake_game/widgets/snake_pixel.dart';
 import '../utils/constants.dart';
@@ -32,7 +33,16 @@ class _PlayGameScreenState extends State<PlayGameScreen>
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    snakeProvider.playBackgroundSound();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const InitAlertDialog();
+        },
+      );
+    });
+
     super.initState();
   }
 
@@ -67,15 +77,15 @@ class _PlayGameScreenState extends State<PlayGameScreen>
                   swipeLeftAndRight(details, gameProvider);
                 },
                 child: Container(
-                  //Color To The Grids
-                  //color: Colors.grey.shade900,
-
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
-                    color: AppConstants.backgroundContainerColor,
+                    //No Grids
+                    color: Colors.grey.shade900,
+                    //With
+                    //color: AppConstants.backgroundContainerColor,
                     border: Border.all(
                       color: Colors.grey,
-                      width: 1,
+                      width: 2,
                     ),
                   ),
                   child: Padding(
