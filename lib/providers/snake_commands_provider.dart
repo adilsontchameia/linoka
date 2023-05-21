@@ -18,6 +18,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<int> scoreSpeed = [30, 40, 50, 60, 70, 80, 90, 100];
   //PlaySound Provider
   AudioPlayer backgroundSound = AudioPlayer();
   AudioPlayer eatingSound = AudioPlayer();
@@ -34,9 +35,9 @@ class SnakeCommandsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void playEatingSound() async {
+  void playEatingSound() {
     eatingSound.play(AssetSource(AppConstants.snakeEatenSoundPath));
-    eatingSound.setVolume(0.3);
+    eatingSound.setVolume(backgroundVolume);
     notifyListeners();
   }
 
@@ -172,7 +173,12 @@ class SnakeCommandsProvider extends ChangeNotifier {
   }
 
   void showInfoDialog(BuildContext context) async {
-    gameTimer!.cancel();
+    if (gamehasStarted) {
+      gameTimer!.cancel();
+    } else {
+      print('Game Not Started');
+    }
+
     showDialog(
       context: context,
       builder: (context) {
@@ -272,9 +278,25 @@ class SnakeCommandsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void increaseSpeed() {
+    gamehasStarted = true;
+    gameTimer = Timer.periodic(snakeSpeed, (timer) {
+      moveSnake();
+    });
+    notifyListeners();
+  }
+
   void eatingFood() {
     //Increasing the Score when eating
     currentScore++;
+
+    //Increasing speed
+    if (currentScore >= 30 && currentScore <= 100) {
+      if (scoreSpeed.contains(currentScore)) {
+        increaseSpeed();
+      }
+    }
+
     //Play a Sound When Eating
     playEatingSound();
     //Randomize Food
