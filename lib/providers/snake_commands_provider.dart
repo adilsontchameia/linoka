@@ -4,25 +4,24 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/dialog_box.dart';
+import '../screen/widgets/game_over_dialog.dart';
 import '../utils/constants.dart';
-import '../utils/game_command_enums.dart';
 import '../utils/snake_food_list.dart';
+
+enum SnakeDirection { up, down, left, right }
 
 class SnakeCommandsProvider extends ChangeNotifier {
   //RandomFood Provider
   int randomFood = 0;
-
   void rondomizeFood() {
     randomFood = Random().nextInt(typeFood.length);
     notifyListeners();
   }
-  //Final Params for random food provider
 
   //PlaySound Provider
   AudioPlayer backgroundSound = AudioPlayer();
   AudioPlayer eatingSound = AudioPlayer();
-  double backgroundVolume = 0.020;
+  double backgroundVolume = 0.050;
   bool isPlayingSound = false;
 
   void playBackgroundSound() async {
@@ -75,7 +74,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
     0,
   ];
   //SnakeDirection is Initialy To The Right
-  var currentDirection = SnakeDirection.RIGHT;
+  var currentDirection = SnakeDirection.right;
   //Food Position
   int foodPosition = 55;
   //GameTimer
@@ -85,7 +84,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
   //Moving the snake
   void moveSnake() {
     switch (currentDirection) {
-      case SnakeDirection.RIGHT:
+      case SnakeDirection.right:
         {
           //If Snake is at right wall, need to re-adjust
           //% => Module => The Remain
@@ -97,7 +96,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
           }
         }
         break;
-      case SnakeDirection.LEFT:
+      case SnakeDirection.left:
         {
           //If Snake is at right wall, need to re-adjust
           //% => Module => The Remain
@@ -109,7 +108,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
           }
         }
         break;
-      case SnakeDirection.UP:
+      case SnakeDirection.up:
         {
           //If Snake is at right wall, need to re-adjust
           //% => Module => The Remain
@@ -121,7 +120,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
           }
         }
         break;
-      case SnakeDirection.DOWN:
+      case SnakeDirection.down:
         {
           //If Snake is at right wall, need to re-adjust
           //% => Module => The Remain
@@ -150,7 +149,6 @@ class SnakeCommandsProvider extends ChangeNotifier {
     gamehasStarted = true;
     gameTimer = Timer.periodic(snakeSpeed, (timer) {
       moveSnake();
-
       //Check If Game Over is Over
       if (gameOver()) {
         gameTimer!.cancel();
@@ -167,14 +165,110 @@ class SnakeCommandsProvider extends ChangeNotifier {
       0,
     ];
     foodPosition = 55;
-    currentDirection = SnakeDirection.RIGHT;
+    currentDirection = SnakeDirection.right;
     gamehasStarted = false;
     currentScore = 0;
     notifyListeners();
   }
 
+  void showInfoDialog(BuildContext context) async {
+    gameTimer!.cancel();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              title: Image.asset(AppConstants.logImgPath),
+              content: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        AppConstants.volumeSettings,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20.0),
+                      ),
+                    ),
+                    Slider(
+                      value: backgroundVolume,
+                      min: 0,
+                      max: 1,
+                      divisions: 10,
+                      onChanged: (newVolume) {
+                        setState(() {
+                          backgroundVolume = newVolume;
+                          backgroundSound.setVolume(newVolume);
+                        });
+                      },
+                      activeColor: Colors.green,
+                    ),
+                    const Divider(color: Colors.black),
+                    const Text(
+                      AppConstants.appInfo,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    const SizedBox(height: 2.0),
+                    const Text(AppConstants.emailInfo,
+                        style: TextStyle(color: Colors.black)),
+                    const Text(AppConstants.socialInfo,
+                        style: TextStyle(color: Colors.black)),
+                    const Text(AppConstants.uiInfo,
+                        style: TextStyle(color: Colors.black)),
+                    const Text(AppConstants.audioInfo,
+                        style: TextStyle(color: Colors.black)),
+                    const Center(
+                        child: Text(AppConstants.yearInfo,
+                            style: TextStyle(color: Colors.black))),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                Column(
+                  children: [
+                    ElevatedButton(
+                      style: TextButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        ),
+                        backgroundColor: Colors.black87,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        resumeGame();
+                      },
+                      child: const Text('Exit',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                    const Text('version 1.0',
+                        style: TextStyle(color: Colors.black))
+                  ],
+                ),
+              ],
+            );
+          }),
+        );
+      },
+    );
+    notifyListeners();
+  }
+
   void pauseGame() {
     gameTimer!.cancel();
+    notifyListeners();
+  }
+
+  void resumeGame() {
+    gameTimer!.isActive;
     notifyListeners();
   }
 
