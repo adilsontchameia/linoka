@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/providers/snake_commands_provider.dart';
-import 'package:snake_game/widgets/app_info_alert.dart';
-import 'package:snake_game/widgets/blank_pixel.dart';
-import 'package:snake_game/widgets/custom_elevated_button.dart';
-import 'package:snake_game/widgets/init_alert_dialog.dart';
-import 'package:snake_game/widgets/score_widget.dart';
-import 'package:snake_game/widgets/snake_pixel.dart';
+import 'package:snake_game/screen/widgets/app_info_alert.dart';
+import 'package:snake_game/screen/widgets/custom_elevated_button.dart';
+import 'package:snake_game/screen/widgets/init_alert_dialog.dart';
+import 'package:snake_game/screen/widgets/snake_pixel.dart';
+import 'package:snake_game/screen/widgets/score_widget.dart';
 import '../utils/constants.dart';
 import '../utils/play_button_logic.dart';
 import '../utils/snake_direction_logic.dart';
 import '../utils/snake_food_list.dart';
+import 'widgets/blank_pixel.dart';
 
 class PlayGameScreen extends StatefulWidget {
   const PlayGameScreen({super.key});
@@ -146,10 +146,8 @@ class _PlayGameScreenState extends State<PlayGameScreen>
                           gameProvider.gamehasPaused = true;
                         }),
                   ),
-                  ScoreWidget(gameProvider: gameProvider),
-                  AppInfoAlertDialog(
-                      backgroundSound: gameProvider.backgroundSound,
-                      backgroundVolume: gameProvider.backgroundVolume),
+                  const ScoreWidget(),
+                  AppInfoAlertDialog(),
                 ],
               ),
             ),
