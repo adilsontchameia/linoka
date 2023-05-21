@@ -32,15 +32,13 @@ class SnakePixelState extends State<SnakePixel>
     return AnimatedBuilder(
       animation: _controller!,
       child: Container(
-        width: 100.0,
-        height: 100.0,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Colors.grey,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.shade200,
-                blurRadius: 0.1,
+                color: Colors.grey.shade300,
+                blurRadius: 0.2,
               )
             ]),
       ),
