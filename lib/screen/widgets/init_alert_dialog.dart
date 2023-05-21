@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snake_game/utils/constants.dart';
 
 import '../../providers/snake_commands_provider.dart';
 
@@ -20,8 +21,8 @@ class _InitAlertDialogState extends State<InitAlertDialog> {
       backgroundColor: Colors.white,
       title: Column(
         children: [
-          Image.asset('assets/lonka_logo.png'),
-          const Text('Welcome To Linoka - Snake Game',
+          Image.asset(AppConstants.appLogoPath),
+          const Text(AppConstants.welcomeMessage,
               style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.black,
@@ -35,12 +36,12 @@ class _InitAlertDialogState extends State<InitAlertDialog> {
               text: const TextSpan(
                 style: TextStyle(color: Colors.black),
                 children: <TextSpan>[
-                  TextSpan(text: 'To Start Playing, Please Press'),
+                  TextSpan(text: AppConstants.startGameMessage),
                   TextSpan(
-                      text: ' PLAY',
+                      text: AppConstants.playInfo,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.black)),
-                  TextSpan(text: ' Button.'),
+                  TextSpan(text: AppConstants.buttonInfo),
                 ],
               ),
             )

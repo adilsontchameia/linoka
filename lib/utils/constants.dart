@@ -11,6 +11,11 @@ abstract class AppConstants {
   static const snakeEatenSoundPath = 'torch_whoosh_panned.mp3';
   //Settings Sections Constants
   static const logImgPath = 'assets/logo.png';
+  static const appLogoPath = 'assets/lonka_logo.png';
+  static const welcomeMessage = 'Welcome To Linoka - Snake Game';
+  static const startGameMessage = 'To Start Playing, Please Press';
+  static const playInfo = ' PLAY';
+  static const buttonInfo = ' Button.';
   static const volumeSettings = 'Volume Settings';
   static const appInfo =
       'Linoka is a simple snake game made by Adilson Tchameia, the name of this app is originally derived from the Nguaguela / Ganguela language, which means SNAKE.\nNguaguela / Ganguela: Ethnic group that lives in the east and southeast of the Central Plateau of Angola - Cuando Cubango.';
