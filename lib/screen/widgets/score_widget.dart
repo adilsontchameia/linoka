@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:snake_game/utils/constants.dart';
 
-import '../providers/snake_commands_provider.dart';
+import '../../providers/snake_commands_provider.dart';
 
 class ScoreWidget extends StatelessWidget {
-  const ScoreWidget({
-    super.key,
-    required this.gameProvider,
-  });
-
-  final SnakeCommandsProvider gameProvider;
+  const ScoreWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final gameProvider = context.watch<SnakeCommandsProvider>();
     return Column(
       children: [
         const Text(

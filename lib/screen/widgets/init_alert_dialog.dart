@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/snake_commands_provider.dart';
+import '../../providers/snake_commands_provider.dart';
 
 class InitAlertDialog extends StatefulWidget {
   const InitAlertDialog({super.key});
@@ -58,8 +58,8 @@ class _InitAlertDialogState extends State<InitAlertDialog> {
                 backgroundColor: Colors.black87,
               ),
               onPressed: () {
-                Navigator.of(context).pop();
                 gameProvider.playBackgroundSound();
+                Navigator.of(context).pop();
               },
               child: const Text('PLAY', style: TextStyle(color: Colors.white)),
             ),
