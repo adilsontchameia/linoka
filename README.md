@@ -1,16 +1,8 @@
-# snake_game
+# Linoka - Snake Game
 
-A new Flutter project.
+This is a simple game made with Flutter. 
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# Demonstration 
+https://github.com/adilsontchameia/snake_game/assets/64656900/d731b066-7ea0-4be4-a2c5-21069b83c330
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
