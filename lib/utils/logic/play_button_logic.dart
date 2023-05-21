@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../providers/snake_commands_provider.dart';
+import '../../providers/snake_commands_provider.dart';
 
 void playButtonLogic(BuildContext context, SnakeCommandsProvider gameProvider) {
   if (gameProvider.gamehasStarted == false) {

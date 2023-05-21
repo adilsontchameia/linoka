@@ -6,11 +6,11 @@ import 'package:snake_game/screen/widgets/custom_elevated_button.dart';
 import 'package:snake_game/screen/widgets/init_alert_dialog.dart';
 import 'package:snake_game/screen/widgets/snake_pixel.dart';
 import 'package:snake_game/screen/widgets/score_widget.dart';
-import '../utils/constants.dart';
-import '../utils/play_button_logic.dart';
-import '../utils/snake_direction_logic.dart';
-import '../utils/snake_food_list.dart';
-import 'widgets/blank_pixel.dart';
+import '../../utils/constants.dart';
+import '../../utils/logic/play_button_logic.dart';
+import '../../utils/logic/snake_direction_logic.dart';
+import '../../utils/snake_food_list.dart';
+import '../widgets/blank_pixel.dart';
 
 class PlayGameScreen extends StatefulWidget {
   const PlayGameScreen({super.key});

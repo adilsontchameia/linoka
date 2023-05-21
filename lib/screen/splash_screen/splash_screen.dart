@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snake_game/screen/play_game_screen.dart';
+import 'package:snake_game/screen/home_screen/home_screen_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
