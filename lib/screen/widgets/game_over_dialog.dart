@@ -5,7 +5,7 @@ Future<dynamic> openDialogBox(BuildContext context, int currentScore) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Center(child: Text('You Loose')),
+        title: const Center(child: Text('Game Over')),
         content: Text(
           'Score: ${currentScore.toString()}',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
