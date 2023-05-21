@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/providers/snake_commands_provider.dart';
-import 'package:snake_game/screen/splash_screen.dart';
+import 'package:snake_game/screen/splash_screen/splash_screen.dart';
 
 void main() => runApp(
     /*
