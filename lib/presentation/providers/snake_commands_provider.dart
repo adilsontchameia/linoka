@@ -5,8 +5,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:snake_game/presentation/pages/widgets/game_over_dialog.dart';
 
-import '../utils/constants.dart';
-import '../utils/snake_food_list.dart';
+import '../../utils/constants.dart';
+import '../../utils/snake_food_list.dart';
 
 enum SnakeDirection { up, down, left, right }
 
@@ -165,6 +165,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
     snakePosition = [
       0,
     ];
+    playBackgroundSound();
     foodPosition = 55;
     currentDirection = SnakeDirection.right;
     gamehasStarted = false;
@@ -176,7 +177,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
     if (gamehasStarted) {
       gameTimer!.cancel();
     } else {
-      print('Game Not Started');
+      debugPrint('Game Not Started');
     }
 
     showDialog(
@@ -317,6 +318,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
     if (bodySnake.contains(snakePosition.last)) {
       return true;
     }
+    pauseGame();
     notifyListeners();
     return false;
   }
