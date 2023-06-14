@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_game/providers/snake_commands_provider.dart';
-import 'package:snake_game/screen/widgets/app_info_alert.dart';
-import 'package:snake_game/screen/widgets/custom_elevated_button.dart';
-import 'package:snake_game/screen/widgets/init_alert_dialog.dart';
-import 'package:snake_game/screen/widgets/snake_pixel.dart';
-import 'package:snake_game/screen/widgets/score_widget.dart';
-import '../../utils/constants.dart';
-import '../../utils/logic/play_button_logic.dart';
-import '../../utils/logic/snake_direction_logic.dart';
-import '../../utils/snake_food_list.dart';
+import 'package:snake_game/presentation/snake_commands_provider.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/logic/play_button_logic.dart';
+import '../../../utils/logic/snake_direction_logic.dart';
+import '../../../utils/snake_food_list.dart';
+import '../widgets/app_info_alert.dart';
 import '../widgets/blank_pixel.dart';
+import '../widgets/custom_elevated_button.dart';
+import '../widgets/init_alert_dialog.dart';
+import '../widgets/score_widget.dart';
+import '../widgets/snake_pixel.dart';
 
 class PlayGameScreen extends StatefulWidget {
   const PlayGameScreen({super.key});
@@ -88,6 +88,7 @@ class _PlayGameScreenState extends State<PlayGameScreen>
                       width: 2,
                     ),
                   ),
+                  //? Building Snake Box
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5.5),
                     child: LayoutBuilder(
@@ -118,20 +119,24 @@ class _PlayGameScreenState extends State<PlayGameScreen>
                 ),
               ),
             ),
+            //? Menu Section
             Container(
               padding: const EdgeInsets.all(5.0),
               color: AppConstants.backgroundContainerColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomElevatedButton(
-                      gameProvider: gameProvider,
-                      foregroundColor: Colors.white,
-                      backgroundColor1: Colors.green,
-                      buttonTitle: AppConstants.play,
-                      onPressed: () {
-                        playButtonLogic(context, gameProvider);
-                      }),
+                  AbsorbPointer(
+                    absorbing: gameProvider.gamehasStarted ? true : false,
+                    child: CustomElevatedButton(
+                        gameProvider: gameProvider,
+                        foregroundColor: Colors.white,
+                        backgroundColor1: Colors.green,
+                        buttonTitle: AppConstants.play,
+                        onPressed: () {
+                          playButtonLogic(context, gameProvider);
+                        }),
+                  ),
                   const SizedBox(width: 5.0),
                   AbsorbPointer(
                     absorbing: !gameProvider.gamehasStarted ? true : false,

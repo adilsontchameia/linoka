@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:snake_game/screen/home_screen/home_screen_screen.dart';
+import 'package:snake_game/utils/constants.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+import '../home_page/home_page.dart';
+
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(
@@ -30,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Column(
               children: [
                 Image.asset(
-                  'assets/lonka_logo.png',
+                  AppConstants.gameLogo,
                   width: 200.0,
                 ),
                 const SizedBox(height: 20.0),

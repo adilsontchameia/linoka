@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:snake_game/presentation/pages/widgets/game_over_dialog.dart';
 
-import '../screen/widgets/game_over_dialog.dart';
 import '../utils/constants.dart';
 import '../utils/snake_food_list.dart';
 
@@ -270,6 +270,7 @@ class SnakeCommandsProvider extends ChangeNotifier {
 
   void pauseGame() {
     gameTimer!.cancel();
+    gamehasStarted = false;
     notifyListeners();
   }
 
