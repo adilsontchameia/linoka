@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../snake_commands_provider.dart';
+import '../../providers/snake_commands_provider.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({

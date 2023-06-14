@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_game/presentation/snake_commands_provider.dart';
+import 'package:snake_game/presentation/providers/snake_commands_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/logic/play_button_logic.dart';
 import '../../../utils/logic/snake_direction_logic.dart';

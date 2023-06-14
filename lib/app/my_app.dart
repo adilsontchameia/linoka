@@ -1,5 +1,5 @@
 import 'package:provider/provider.dart';
-import 'package:snake_game/presentation/snake_commands_provider.dart';
+import 'package:snake_game/presentation/providers/snake_commands_provider.dart';
 import 'package:flutter/material.dart';
 
 import '../presentation/pages/splash_page/splash_page.dart';

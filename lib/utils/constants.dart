@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 abstract class AppConstants {
   static const backgroundContainerGridColor = Color.fromARGB(255, 22, 22, 22);
   static const backgroundContainerColor = Color.fromARGB(255, 22, 22, 22);
-  static const gameLogo = 'assets/lonka_logo.png';
+  static const gameLogo = 'assets/linoka_logo.png';
   //Audio Section Constants
   static const pause = 'Pause';
   static const score = 'Score';
